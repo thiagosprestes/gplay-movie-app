@@ -1,4 +1,4 @@
-package com.example.globoplay.ui.screens.home.components
+package com.example.globoplay.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

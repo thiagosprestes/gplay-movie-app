@@ -25,7 +25,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.globoplay.ui.screens.home.FavoritesScreen
+import com.example.globoplay.ui.screens.favorites.FavoritesScreen
 import com.example.globoplay.ui.screens.home.HomeScreen
 import com.example.globoplay.ui.theme.Black
 import com.example.globoplay.ui.theme.White
@@ -73,7 +73,9 @@ fun Navigation() {
                         },
                         colors = NavigationBarItemDefaults.colors(
                             selectedIconColor = White,
-                            unselectedIconColor = White.copy(0.7f),
+                            unselectedIconColor = White.copy(0.4f),
+                            selectedTextColor = White,
+                            unselectedTextColor = White.copy(0.4f),
                             indicatorColor = Black,
                         )
                     )
@@ -94,7 +96,7 @@ fun HomeNavHost(navController: NavHostController, paddingValues: PaddingValues) 
             HomeScreen(navController, paddingValues)
         }
         composable(Route.FavoritesScreen) {
-            FavoritesScreen(navController)
+            FavoritesScreen(navController, paddingValues)
         }
     }
 }

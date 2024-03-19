@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.globoplay.R
-import com.example.globoplay.ui.screens.home.components.ItemsList
+import com.example.globoplay.ui.components.ItemsList
 import com.example.globoplay.ui.theme.Black
 
 @Composable
