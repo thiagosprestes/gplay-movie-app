@@ -70,4 +70,5 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.7")
     implementation("androidx.hilt:hilt-navigation-fragment:1.2.0")
     implementation("androidx.paging:paging-runtime-ktx:3.2.1")
+    implementation("io.coil-kt:coil-compose:2.6.0")
 }
