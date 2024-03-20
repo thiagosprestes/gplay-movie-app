@@ -1,15 +1,14 @@
 package com.example.globoplay.core.data.remote.repository
 
-import com.example.globoplay.core.data.remote.MovieDataSource
-import com.example.globoplay.core.domain.model.Movie
+import com.example.globoplay.core.data.remote.model.response.MovieResponse
 import com.example.globoplay.features.home.domain.repository.MoviePopularRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import com.example.globoplay.features.home.domain.source.MoviePopularRemoteDataSource
+import javax.inject.Inject
 
-class MoviePopularRepositoryImpl(
-    private val remoteDataSource: MovieDataSource
+class MoviePopularRepositoryImpl @Inject constructor(
+    private val remoteDataSource: MoviePopularRemoteDataSource
 ) : MoviePopularRepository {
-    override fun getPopularMovies(): Flow<Movie> {
-        return flow { remoteDataSource.getPopularMovies() }
+    override suspend fun getPopularMovies(): MovieResponse {
+        return remoteDataSource.getPopularMovies()
     }
 }

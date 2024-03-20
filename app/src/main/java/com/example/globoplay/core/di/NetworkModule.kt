@@ -1,12 +1,14 @@
 package com.example.globoplay.core.di
 
-import com.example.globoplay.core.data.remote.MovieDataSource
+import com.example.globoplay.BuildConfig
+import com.example.globoplay.core.data.remote.MovieService
 import com.example.globoplay.core.data.remote.ParamsInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -19,10 +21,28 @@ object NetworkModule {
     }
 
     @Provides
+    fun provideLoggingInterceptor(): HttpLoggingInterceptor {
+        return HttpLoggingInterceptor().apply {
+            setLevel(
+                if (BuildConfig.DEBUG) {
+                    HttpLoggingInterceptor.Level.BODY
+                } else {
+                    HttpLoggingInterceptor.Level.NONE
+                }
+            )
+        }
+    }
+
+
+    @Provides
     fun provideOkHttpClient(
-        paramsInterceptor: ParamsInterceptor
+        paramsInterceptor: ParamsInterceptor,
+        loggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient {
-        return OkHttpClient.Builder().addInterceptor(paramsInterceptor).build()
+        return OkHttpClient.Builder()
+            .addInterceptor(paramsInterceptor)
+            .addInterceptor(loggingInterceptor)
+            .build()
     }
 
     @Provides
@@ -34,12 +54,12 @@ object NetworkModule {
     fun provideMovieDataSource(
         client: OkHttpClient,
         converterFactory: GsonConverterFactory
-    ): MovieDataSource {
+    ): MovieService {
         return Retrofit.Builder()
-            .baseUrl("")
+            .baseUrl(BuildConfig.BASE_URL)
             .client(client)
             .addConverterFactory(converterFactory)
             .build()
-            .create(MovieDataSource::class.java)
+            .create(MovieService::class.java)
     }
 }

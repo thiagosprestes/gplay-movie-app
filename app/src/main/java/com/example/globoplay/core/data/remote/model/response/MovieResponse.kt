@@ -2,17 +2,15 @@ package com.example.globoplay.core.data.remote.model.response
 
 
 import com.example.globoplay.core.data.remote.model.MovieResult
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
-@Serializable
 data class MovieResponse(
-    @SerialName("page")
+    @SerializedName("page")
     val page: Int?,
-    @SerialName("results")
+    @SerializedName("results")
     val results: List<MovieResult?>?,
-    @SerialName("total_pages")
+    @SerializedName("total_pages")
     val totalPages: Int?,
-    @SerialName("total_results")
+    @SerializedName("total_results")
     val totalResults: Int?
 )

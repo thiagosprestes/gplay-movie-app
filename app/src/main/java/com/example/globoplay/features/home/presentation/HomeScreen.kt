@@ -9,21 +9,47 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.globoplay.R
+import com.example.globoplay.core.domain.model.Movie
 import com.example.globoplay.core.presentation.components.ItemsList
+import com.example.globoplay.core.presentation.components.Loading
 import com.example.globoplay.ui.theme.Black
+import com.example.globoplay.ui.theme.White
 
 @Composable
-fun HomeScreen(navController: NavController, paddingValues: PaddingValues) {
+fun HomeScreen(
+    onGoToMovieDetail: () -> Unit,
+    paddingValues: PaddingValues,
+    uiState: States,
+    movies: List<Movie>
+) {
+    when (uiState) {
+        States.LOADING -> Loading()
+        States.DEFAULT -> Default(onGoToMovieDetail, paddingValues, movies)
+        States.GENERIC_ERROR -> Text("Generic error")
+        States.NETWORK_ERROR -> Text("Network error")
+    }
+}
+
+@Composable
+fun Default(
+    onGoToMovieDetail: () -> Unit,
+    paddingValues: PaddingValues,
+    movies: List<Movie>
+) {
     Column(
         Modifier
             .fillMaxSize()
@@ -39,11 +65,13 @@ fun HomeScreen(navController: NavController, paddingValues: PaddingValues) {
             Image(painter = painterResource(id = R.drawable.globoplay), contentDescription = null)
         }
         Column(
-            Modifier.verticalScroll(rememberScrollState()).padding(bottom = 20.dp)
+            Modifier
+                .verticalScroll(rememberScrollState())
+                .padding(bottom = 20.dp)
         ) {
-            ItemsList("Novelas")
-            ItemsList("Séries")
-            ItemsList("Cinema")
+            ItemsList("Novelas", movies)
+//            ItemsList("Séries")
+//            ItemsList("Cinema")
         }
     }
 }
@@ -51,5 +79,10 @@ fun HomeScreen(navController: NavController, paddingValues: PaddingValues) {
 @Preview
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen(rememberNavController(), PaddingValues())
+    HomeScreen(
+        onGoToMovieDetail = {},
+        paddingValues = PaddingValues(),
+        uiState = States.LOADING,
+        movies = emptyList()
+    )
 }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,12 +19,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
 import coil.compose.AsyncImage
+import com.example.globoplay.BuildConfig
+import com.example.globoplay.core.domain.model.Movie
 import com.example.globoplay.ui.theme.White
 import com.example.globoplay.ui.theme.circularFontFamily
+import kotlinx.coroutines.flow.emptyFlow
 
 @Composable
-fun ItemsList(title:String) {
+fun ItemsList(title: String, movies: List<Movie>) {
     Column(Modifier.padding(top = 30.dp)) {
         Text(
             text = title,
@@ -39,9 +45,9 @@ fun ItemsList(title:String) {
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = PaddingValues(horizontal = 20.dp)
         ) {
-            items(5) {
+            items(movies) {
                 AsyncImage(
-                    model = "https://www.movieposters.com/cdn/shop/products/108b520c55e3c9760f77a06110d6a73b_240x360_crop_center.progressive.jpg?v=1573652543",
+                    model = it.imageUrl,
                     contentDescription = null,
                     placeholder = BrushPainter(
                         Brush.linearGradient(
@@ -63,5 +69,5 @@ fun ItemsList(title:String) {
 @Preview
 @Composable
 fun ItemsListPreview() {
-    ItemsList("Novelas")
+    ItemsList("Novelas", emptyList())
 }

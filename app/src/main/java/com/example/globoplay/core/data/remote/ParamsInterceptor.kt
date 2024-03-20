@@ -1,5 +1,6 @@
 package com.example.globoplay.core.data.remote
 
+import com.example.globoplay.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -8,7 +9,7 @@ class ParamsInterceptor : Interceptor {
         val request = chain.request()
         val url = request.url.newBuilder()
             .addQueryParameter("lang", "pt_br")
-            .addQueryParameter("api_key", "")
+            .addQueryParameter("api_key", BuildConfig.API_KEY)
             .build()
 
         val newRequest = request.newBuilder().url(url).build()
