@@ -1,4 +1,4 @@
-package com.example.globoplay.ui.screens.favorites
+package com.example.globoplay.features.favorites
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

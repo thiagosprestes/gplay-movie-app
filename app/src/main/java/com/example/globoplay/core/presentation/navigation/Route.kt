@@ -1,4 +1,4 @@
-package com.example.globoplay.ui.navigation
+package com.example.globoplay.core.presentation.navigation
 
 object Route {
     const val HomeScreen = "HomeScreen"

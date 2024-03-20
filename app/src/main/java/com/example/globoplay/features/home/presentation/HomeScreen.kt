@@ -1,4 +1,4 @@
-package com.example.globoplay.ui.screens.home
+package com.example.globoplay.features.home.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.globoplay.R
-import com.example.globoplay.ui.components.ItemsList
+import com.example.globoplay.core.presentation.components.ItemsList
 import com.example.globoplay.ui.theme.Black
 
 @Composable
