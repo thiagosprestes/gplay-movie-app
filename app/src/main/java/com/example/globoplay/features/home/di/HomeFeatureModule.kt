@@ -1,6 +1,6 @@
 package com.example.globoplay.features.home.di
 
-import com.example.globoplay.core.data.remote.MovieService
+import com.example.globoplay.core.data.remote.datasource.MovieService
 import com.example.globoplay.core.data.remote.repository.MoviePopularRepositoryImpl
 import com.example.globoplay.features.home.data.source.MoviePopularRemoteDataSourceImpl
 import com.example.globoplay.features.home.domain.repository.MoviePopularRepository

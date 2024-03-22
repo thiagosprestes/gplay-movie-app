@@ -7,14 +7,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.globoplay.core.presentation.components.BottomNavigationBar
 import com.example.globoplay.features.favorites.FavoritesScreen
 import com.example.globoplay.features.home.presentation.HomeScreen
 import com.example.globoplay.features.home.presentation.HomeViewModel
+import com.example.globoplay.features.movieDetail.presentation.MovieDetailScreen
+import com.example.globoplay.features.movieDetail.presentation.MovieDetailViewModel
 
 data class BottomNavItem(
     val title: String,
@@ -47,20 +51,51 @@ fun Navigation() {
 
 @Composable
 fun HomeNavHost(navController: NavHostController, paddingValues: PaddingValues) {
-    NavHost(navController = navController, startDestination = Route.HomeScreen) {
-        composable(Route.HomeScreen) {
+    NavHost(navController = navController, startDestination = Route.HomeScreen.routeName) {
+        composable(Route.HomeScreen.routeName) {
             val viewModel: HomeViewModel = hiltViewModel()
             val uiState = viewModel.uiState.value
             val movies = viewModel.popularMovies.value
 
             HomeScreen(
-                onGoToMovieDetail = { },
+                onGoToMovieDetail = {
+                    navController.navigate(Route.MovieDetailsScreen.passMovieId(it))
+                },
                 paddingValues,
                 uiState,
                 movies
             )
         }
-        composable(Route.FavoritesScreen) {
+        composable(Route.MovieDetailsScreen.routeName, arguments = listOf(
+            navArgument("movieId") {
+                type = NavType.IntType
+                defaultValue = 0
+            }
+        )) {
+            val viewModel: MovieDetailViewModel = hiltViewModel()
+            val options = viewModel.options.value
+            val movieDetails = viewModel.movieDetails.value
+            val movieCredits = viewModel.movieCredits.value
+            val movieId = it.arguments?.getInt("movieId")
+            val getMovieDetails = viewModel::getMovieDetails
+            val uiState = viewModel.uiState.value
+
+            MovieDetailScreen(
+                options = options,
+                isSelectedOption = { option -> viewModel.isSelectedOption(option) },
+                onSelectOption = { option -> viewModel.onSelectOption(option) },
+                paddingValues = paddingValues,
+                movieDetails = movieDetails,
+                movieCredits = movieCredits,
+                movieId = movieId,
+                getMovieDetails = getMovieDetails,
+                uiState = uiState,
+                formatDate = { date ->
+                    viewModel.formatDate(date)
+                }
+            )
+        }
+        composable(Route.FavoritesScreen.routeName) {
             FavoritesScreen(navController, paddingValues)
         }
     }

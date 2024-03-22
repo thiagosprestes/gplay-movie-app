@@ -22,8 +22,8 @@ fun BottomNavigationBar(
     destination: String? = null
 ) {
     val navItems = listOf(
-        BottomNavItem("Início", Route.HomeScreen, Icons.Default.Home),
-        BottomNavItem("Minha lista", Route.FavoritesScreen, Icons.Default.Star)
+        BottomNavItem("Início", Route.HomeScreen.routeName, Icons.Default.Home),
+        BottomNavItem("Minha lista", Route.FavoritesScreen.routeName, Icons.Default.Star)
     )
 
     NavigationBar(containerColor = Black) {
@@ -59,5 +59,5 @@ fun BottomNavigationBar(
 @Preview
 @Composable
 fun BottomNavigationBarPreview() {
-    BottomNavigationBar({}, Route.HomeScreen)
+    BottomNavigationBar({}, Route.HomeScreen.routeName)
 }

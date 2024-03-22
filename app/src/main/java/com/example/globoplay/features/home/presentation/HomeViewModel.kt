@@ -17,7 +17,6 @@ class HomeViewModel @Inject constructor(
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase
 ) : ViewModel() {
     var uiState = mutableStateOf(States.LOADING)
-
     var popularMovies = mutableStateOf<List<Movie>>(emptyList())
 
     init {

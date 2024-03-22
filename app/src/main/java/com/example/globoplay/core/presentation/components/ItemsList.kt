@@ -1,5 +1,6 @@
 package com.example.globoplay.core.presentation.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -29,7 +30,7 @@ import com.example.globoplay.ui.theme.circularFontFamily
 import kotlinx.coroutines.flow.emptyFlow
 
 @Composable
-fun ItemsList(title: String, movies: List<Movie>) {
+fun ItemsList(title: String, movies: List<Movie>, onGoToMovieDetails: (movieId: Int) -> Unit) {
     Column(Modifier.padding(top = 30.dp)) {
         Text(
             text = title,
@@ -60,6 +61,9 @@ fun ItemsList(title: String, movies: List<Movie>) {
                     modifier = Modifier
                         .width(132.dp)
                         .height(195.dp)
+                        .clickable {
+                            onGoToMovieDetails(it.id!!)
+                        }
                 )
             }
         }
@@ -69,5 +73,5 @@ fun ItemsList(title: String, movies: List<Movie>) {
 @Preview
 @Composable
 fun ItemsListPreview() {
-    ItemsList("Novelas", emptyList())
+    ItemsList("Novelas", emptyList(), {})
 }

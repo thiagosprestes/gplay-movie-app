@@ -1,6 +1,11 @@
 package com.example.globoplay.core.presentation.navigation
 
-object Route {
-    const val HomeScreen = "HomeScreen"
-    const val FavoritesScreen = "FavoritesScreen"
+sealed class Route(
+    val routeName: String
+) {
+    object HomeScreen : Route("HomeScreen")
+    object FavoritesScreen : Route("FavoritesScreen")
+    object MovieDetailsScreen : Route("MovieDetailsScreen/{movieId}") {
+        fun passMovieId(movieId: Int) = "MovieDetailsScreen/${movieId}"
+    }
 }

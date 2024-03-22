@@ -1,7 +1,7 @@
 package com.example.globoplay.core.di
 
 import com.example.globoplay.BuildConfig
-import com.example.globoplay.core.data.remote.MovieService
+import com.example.globoplay.core.data.remote.datasource.MovieService
 import com.example.globoplay.core.data.remote.ParamsInterceptor
 import dagger.Module
 import dagger.Provides

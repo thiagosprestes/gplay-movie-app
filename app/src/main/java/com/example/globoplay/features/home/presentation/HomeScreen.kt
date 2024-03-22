@@ -31,7 +31,7 @@ import com.example.globoplay.ui.theme.White
 
 @Composable
 fun HomeScreen(
-    onGoToMovieDetail: () -> Unit,
+    onGoToMovieDetail: (movieId: Int) -> Unit,
     paddingValues: PaddingValues,
     uiState: States,
     movies: List<Movie>
@@ -45,8 +45,8 @@ fun HomeScreen(
 }
 
 @Composable
-fun Default(
-    onGoToMovieDetail: () -> Unit,
+private fun Default(
+    onGoToMovieDetail: (movieId: Int) -> Unit,
     paddingValues: PaddingValues,
     movies: List<Movie>
 ) {
@@ -69,7 +69,7 @@ fun Default(
                 .verticalScroll(rememberScrollState())
                 .padding(bottom = 20.dp)
         ) {
-            ItemsList("Novelas", movies)
+            ItemsList("Novelas", movies, onGoToMovieDetail)
 //            ItemsList("Séries")
 //            ItemsList("Cinema")
         }
