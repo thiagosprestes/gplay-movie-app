@@ -26,6 +26,7 @@ class MovieDetailViewModel @Inject constructor(
     var uiState = mutableStateOf(States.LOADING)
     var movieDetails = mutableStateOf<MovieDetails?>(null)
     var movieCredits = mutableStateOf<MovieCredits?>(null)
+    var similarMovies = mutableStateOf<List<Movie>?>(null)
     private var selectedOption = mutableStateOf(OptionName.WATCH)
     val options = mutableStateOf(
         listOf(
@@ -70,6 +71,7 @@ class MovieDetailViewModel @Inject constructor(
                             is ResultData.Success -> {
                                 movieDetails.value = it.data?.first
                                 movieCredits.value = it.data?.second
+                                similarMovies.value = it.data?.third
                                 uiState.value = States.DEFAULT
                             }
 

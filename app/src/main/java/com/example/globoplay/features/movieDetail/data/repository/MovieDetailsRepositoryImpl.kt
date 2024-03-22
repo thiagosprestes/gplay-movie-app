@@ -1,5 +1,7 @@
 package com.example.globoplay.features.movieDetail.data.repository
 
+import com.example.globoplay.core.data.remote.model.response.MovieResponse
+import com.example.globoplay.core.domain.model.Movie
 import com.example.globoplay.core.domain.model.MovieCredits
 import com.example.globoplay.core.domain.model.MovieDetails
 import com.example.globoplay.features.movieDetail.domain.repository.MovieDetailsRepository
@@ -15,5 +17,9 @@ class MovieDetailsRepositoryImpl @Inject constructor(
 
     override suspend fun getMovieCredits(movieId: Int): MovieCredits {
         return remoteDataSource.getMovieCredits(movieId)
+    }
+
+    override suspend fun getSimilarMovies(movieId: Int): MovieResponse {
+        return remoteDataSource.getSimilarMovies(movieId)
     }
 }

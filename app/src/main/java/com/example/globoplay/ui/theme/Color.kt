@@ -15,5 +15,7 @@ val White = Color(0xFFFFFFFF)
 val Black = Color(0xFF000000)
 val LightGrey = Color(0xFFADAAAA)
 val DarkenGrey = Color(0xFF1F1F1F)
+val MediumGrey = Color(0xFF8A8A8A)
+val DetailsBackground = Color(0xFF202020)
 val Transparent = Color(0x00000000)
 

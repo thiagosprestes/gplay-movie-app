@@ -13,6 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.navigation
 import com.example.globoplay.core.presentation.components.BottomNavigationBar
 import com.example.globoplay.features.favorites.FavoritesScreen
 import com.example.globoplay.features.home.presentation.HomeScreen
@@ -74,11 +75,15 @@ fun HomeNavHost(navController: NavHostController, paddingValues: PaddingValues) 
         )) {
             val viewModel: MovieDetailViewModel = hiltViewModel()
             val options = viewModel.options.value
+            val uiState = viewModel.uiState.value
+
+
             val movieDetails = viewModel.movieDetails.value
             val movieCredits = viewModel.movieCredits.value
+            val similarMovies = viewModel.similarMovies.value
+
             val movieId = it.arguments?.getInt("movieId")
             val getMovieDetails = viewModel::getMovieDetails
-            val uiState = viewModel.uiState.value
 
             MovieDetailScreen(
                 options = options,
@@ -89,9 +94,16 @@ fun HomeNavHost(navController: NavHostController, paddingValues: PaddingValues) 
                 movieCredits = movieCredits,
                 movieId = movieId,
                 getMovieDetails = getMovieDetails,
+                similarMovies = similarMovies?.take(6),
                 uiState = uiState,
                 formatDate = { date ->
                     viewModel.formatDate(date)
+                },
+                onGoToMovieDetail = { movieId ->
+                    navController.navigate(Route.MovieDetailsScreen.passMovieId(movieId))
+                },
+                onBack = {
+                    navController.popBackStack()
                 }
             )
         }

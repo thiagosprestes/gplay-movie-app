@@ -1,6 +1,7 @@
 package com.example.globoplay.features.movieDetail.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,7 +33,13 @@ import com.example.globoplay.ui.theme.White
 import com.example.globoplay.ui.theme.circularFontFamily
 
 @Composable
-fun Main(imageUrl: String, title: String, genres: List<String>, overview:String) {
+fun Main(
+    imageUrl: String,
+    title: String,
+    genres: List<String>,
+    overview: String,
+    onBack: () -> Unit
+) {
     Box {
         AsyncImage(
             model = imageUrl,
@@ -78,7 +85,8 @@ fun Main(imageUrl: String, title: String, genres: List<String>, overview:String)
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     tint = White,
-                    contentDescription = null
+                    contentDescription = null,
+                    modifier = Modifier.clickable { onBack() }
                 )
             }
             AsyncImage(

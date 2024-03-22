@@ -39,14 +39,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.globoplay.core.domain.model.Movie
 import com.example.globoplay.core.domain.model.MovieCredits
 import com.example.globoplay.core.domain.model.MovieDetails
 import com.example.globoplay.core.presentation.components.Loading
 import com.example.globoplay.features.home.presentation.States
+import com.example.globoplay.features.movieDetail.presentation.components.Buttons
 import com.example.globoplay.features.movieDetail.presentation.components.DetailRow
 import com.example.globoplay.features.movieDetail.presentation.components.Main
 import com.example.globoplay.ui.theme.Black
 import com.example.globoplay.ui.theme.DarkenGrey
+import com.example.globoplay.ui.theme.DetailsBackground
 import com.example.globoplay.ui.theme.White
 import com.example.globoplay.ui.theme.circularFontFamily
 
@@ -58,10 +61,13 @@ fun MovieDetailScreen(
     paddingValues: PaddingValues,
     movieDetails: MovieDetails?,
     movieCredits: MovieCredits?,
+    similarMovies: List<Movie>?,
     movieId: Int?,
     getMovieDetails: (MovieDetailEvent.GetMovieDetail) -> Unit,
     uiState: States,
-    formatDate: (date: String) -> String
+    formatDate: (date: String) -> String,
+    onGoToMovieDetail: (movieId: Int) -> Unit,
+    onBack: () -> Unit
 ) {
     LaunchedEffect(key1 = true) {
         if (movieId != null) {
@@ -72,8 +78,7 @@ fun MovieDetailScreen(
     when (uiState) {
         States.LOADING -> Loading()
         States.DEFAULT -> {
-
-            if (movieDetails != null && movieCredits != null)
+            if (movieDetails != null && movieCredits != null && similarMovies != null)
                 Default(
                     paddingValues,
                     options,
@@ -81,7 +86,10 @@ fun MovieDetailScreen(
                     isSelectedOption,
                     movieDetails,
                     movieCredits,
-                    formatDate
+                    similarMovies,
+                    formatDate,
+                    onGoToMovieDetail,
+                    onBack
                 )
         }
 
@@ -100,7 +108,10 @@ private fun Default(
     isSelectedOption: (option: OptionName) -> Boolean,
     movieDetail: MovieDetails,
     movieCredits: MovieCredits,
-    formatDate: (date: String) -> String
+    similarMovies: List<Movie>,
+    formatDate: (date: String) -> String,
+    onGoToMovieDetail: (movieId: Int) -> Unit,
+    onBack: () -> Unit
 ) {
     Column(
         Modifier
@@ -112,72 +123,11 @@ private fun Default(
             imageUrl = movieDetail.imageUrl,
             title = movieDetail.title,
             genres = movieDetail.genres,
-            overview = movieDetail.overview
+            overview = movieDetail.overview,
+            onBack = onBack
         )
         Column {
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 20.dp,
-                        top = 10.dp,
-                        end = 20.dp,
-                        bottom = 30.dp,
-                    ),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Button(
-                    onClick = { },
-                    colors = ButtonDefaults.buttonColors(White),
-                    modifier = Modifier
-                        .padding(end = 5.dp)
-                        .weight(1f)
-                        .clip(RoundedCornerShape(5.dp))
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.PlayArrow,
-                        contentDescription = null,
-                        modifier = Modifier.padding(end = 5.dp)
-                    )
-                    Text(
-                        text = "Assista",
-                        fontFamily = circularFontFamily,
-                        color = Black,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp,
-                        letterSpacing = 0.sp,
-                        modifier = Modifier
-                            .padding(5.dp)
-
-                    )
-                }
-                Button(
-                    onClick = { },
-                    colors = ButtonDefaults.buttonColors(Black),
-                    modifier = Modifier
-                        .border(
-                            width = 1.dp,
-                            color = White,
-                            shape = RoundedCornerShape(5.dp)
-                        )
-                        .weight(1f)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Star,
-                        contentDescription = null,
-                        modifier = Modifier.padding(end = 5.dp),
-                        tint = White
-                    )
-                    Text(
-                        text = "Minha lista",
-                        fontFamily = circularFontFamily,
-                        color = White,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp,
-                        letterSpacing = 0.sp
-                    )
-                }
-            }
+            Buttons()
             Row(Modifier.padding(horizontal = 20.dp)) {
                 options.map {
                     Text(
@@ -217,9 +167,9 @@ private fun Default(
                         verticalArrangement = Arrangement.spacedBy(10.dp),
                         horizontalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
-                        for (i in 1..6) {
+                        for (movie in similarMovies) {
                             AsyncImage(
-                                model = "https://www.movieposters.com/cdn/shop/products/108b520c55e3c9760f77a06110d6a73b_240x360_crop_center.progressive.jpg?v=1573652543",
+                                model = movie.imageUrl,
                                 contentDescription = null,
                                 contentScale = ContentScale.Crop,
                                 placeholder = BrushPainter(
@@ -233,6 +183,9 @@ private fun Default(
                                 modifier = Modifier
                                     .width(110.dp)
                                     .height(180.dp)
+                                    .clickable {
+                                        onGoToMovieDetail(movie.id ?: 0)
+                                    }
                             )
                         }
                     }
@@ -240,7 +193,7 @@ private fun Default(
             } else {
                 Column(
                     Modifier
-                        .background(DarkenGrey)
+                        .background(DetailsBackground)
                         .fillMaxSize()
                         .padding(horizontal = 20.dp, vertical = 30.dp)
                 ) {
@@ -294,9 +247,12 @@ fun MovieDetailPreview() {
             director = "",
             cast = listOf("")
         ),
+        similarMovies = emptyList(),
         movieId = 0,
         getMovieDetails = {},
         uiState = States.DEFAULT,
-        formatDate = { "" }
+        formatDate = { "" },
+        onGoToMovieDetail = {},
+        onBack = {}
     )
 }

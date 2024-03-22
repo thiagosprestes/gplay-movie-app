@@ -1,6 +1,8 @@
 package com.example.globoplay.features.movieDetail.data.source
 
 import com.example.globoplay.core.data.remote.datasource.MovieService
+import com.example.globoplay.core.data.remote.model.response.MovieResponse
+import com.example.globoplay.core.domain.model.Movie
 import com.example.globoplay.core.domain.model.MovieCredits
 import com.example.globoplay.core.domain.model.MovieDetails
 import com.example.globoplay.core.util.toPosterUrl
@@ -44,5 +46,9 @@ class MovieDetailsRemoteDataSourceImpl @Inject constructor(
             cast = cast,
             director = director?.name
         )
+    }
+
+    override suspend fun getSimilarMovies(movieId: Int): MovieResponse {
+        return service.getSimilarMovies(movieId)
     }
 }
