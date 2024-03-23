@@ -121,7 +121,9 @@ fun HomeNavHost(navController: NavHostController, paddingValues: PaddingValues) 
             val uiState = viewModel.uiState.value
             val movies = viewModel.movies.value
 
-            FavoritesScreen(paddingValues, uiState, movies)
+            FavoritesScreen(paddingValues, uiState, movies, onGoToMovie = {
+                navController.navigate(Route.MovieDetailsScreen.passMovieId(it))
+            })
         }
     }
 }

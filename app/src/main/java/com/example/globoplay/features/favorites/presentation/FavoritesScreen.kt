@@ -1,6 +1,7 @@
 package com.example.globoplay.features.favorites.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -33,12 +34,18 @@ import com.example.globoplay.ui.theme.White
 import com.example.globoplay.ui.theme.circularFontFamily
 
 @Composable
-fun FavoritesScreen(paddingValues: PaddingValues, uiState: States, movies: List<Movie>) {
+fun FavoritesScreen(
+    paddingValues: PaddingValues,
+    uiState: States,
+    movies: List<Movie>,
+    onGoToMovie: (movieId: Int) -> Unit
+) {
     when (uiState) {
         States.LOADING -> Loading()
         States.DEFAULT -> Default(
             paddingValues,
-            movies
+            movies,
+            onGoToMovie
         )
 
         States.GENERIC_ERROR -> Text("Generic error")
@@ -47,7 +54,11 @@ fun FavoritesScreen(paddingValues: PaddingValues, uiState: States, movies: List<
 }
 
 @Composable
-fun Default(paddingValues: PaddingValues, movies: List<Movie>) {
+fun Default(
+    paddingValues: PaddingValues,
+    movies: List<Movie>,
+    onGoToMovie: (movieId: Int) -> Unit
+) {
     Column(
         Modifier
             .fillMaxSize()
@@ -93,6 +104,7 @@ fun Default(paddingValues: PaddingValues, movies: List<Movie>) {
                         modifier = Modifier
                             .width(120.dp)
                             .height(190.dp)
+                            .clickable { onGoToMovie(it.id) }
                     )
                 }
             }
@@ -103,5 +115,5 @@ fun Default(paddingValues: PaddingValues, movies: List<Movie>) {
 @Preview
 @Composable
 fun FavoritesScreenPreview() {
-    FavoritesScreen(PaddingValues(), States.DEFAULT, emptyList())
+    FavoritesScreen(PaddingValues(), States.DEFAULT, emptyList(), {})
 }
