@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.globoplay.core.domain.model.Movie
+import com.example.globoplay.core.domain.model.States
 import com.example.globoplay.core.util.ErrorType
 import com.example.globoplay.core.util.ResultData
 import com.example.globoplay.features.home.domain.usecase.GetMoviesUseCase

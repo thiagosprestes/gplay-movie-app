@@ -13,9 +13,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import androidx.navigation.navigation
 import com.example.globoplay.core.presentation.components.BottomNavigationBar
-import com.example.globoplay.features.favorites.FavoritesScreen
+import com.example.globoplay.features.favorites.presentation.FavoritesScreen
+import com.example.globoplay.features.favorites.presentation.FavoritesViewModel
 import com.example.globoplay.features.home.presentation.HomeScreen
 import com.example.globoplay.features.home.presentation.HomeViewModel
 import com.example.globoplay.features.movieDetail.presentation.MovieDetailScreen
@@ -84,9 +84,12 @@ fun HomeNavHost(navController: NavHostController, paddingValues: PaddingValues) 
             val movieDetails = viewModel.movieDetails.value
             val movieCredits = viewModel.movieCredits.value
             val similarMovies = viewModel.similarMovies.value
+            val isFavorited = viewModel.isFavorited.value
 
             val movieId = it.arguments?.getInt("movieId")
             val getMovieDetails = viewModel::getMovieDetails
+            val checkedFavorite = viewModel::checkedFavorite
+            val onAddFavorite = viewModel::onAddFavorite
 
             MovieDetailScreen(
                 options = options,
@@ -107,11 +110,18 @@ fun HomeNavHost(navController: NavHostController, paddingValues: PaddingValues) 
                 },
                 onBack = {
                     navController.popBackStack()
-                }
+                },
+                checkedFavorite = checkedFavorite,
+                onAddFavorite = onAddFavorite,
+                isFavorited = isFavorited
             )
         }
         composable(Route.FavoritesScreen.routeName) {
-            FavoritesScreen(navController, paddingValues)
+            val viewModel: FavoritesViewModel = hiltViewModel()
+            val uiState = viewModel.uiState.value
+            val movies = viewModel.movies.value
+
+            FavoritesScreen(paddingValues, uiState, movies)
         }
     }
 }

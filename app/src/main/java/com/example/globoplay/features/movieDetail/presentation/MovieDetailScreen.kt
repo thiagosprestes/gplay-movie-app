@@ -1,7 +1,6 @@
 package com.example.globoplay.features.movieDetail.presentation
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,24 +9,15 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
@@ -42,8 +32,8 @@ import coil.compose.AsyncImage
 import com.example.globoplay.core.domain.model.Movie
 import com.example.globoplay.core.domain.model.MovieCredits
 import com.example.globoplay.core.domain.model.MovieDetails
+import com.example.globoplay.core.domain.model.States
 import com.example.globoplay.core.presentation.components.Loading
-import com.example.globoplay.features.home.presentation.States
 import com.example.globoplay.features.movieDetail.presentation.components.Buttons
 import com.example.globoplay.features.movieDetail.presentation.components.DetailRow
 import com.example.globoplay.features.movieDetail.presentation.components.Main
@@ -67,11 +57,15 @@ fun MovieDetailScreen(
     uiState: States,
     formatDate: (date: String) -> String,
     onGoToMovieDetail: (movieId: Int) -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onAddFavorite: (movie: MovieDetails) -> Unit,
+    checkedFavorite: (MovieDetailEvent.CheckedFavorite) -> Unit,
+    isFavorited: Boolean
 ) {
     LaunchedEffect(key1 = true) {
         if (movieId != null) {
             getMovieDetails(MovieDetailEvent.GetMovieDetail(movieId))
+            checkedFavorite(MovieDetailEvent.CheckedFavorite(movieId))
         }
     }
 
@@ -89,7 +83,9 @@ fun MovieDetailScreen(
                     similarMovies,
                     formatDate,
                     onGoToMovieDetail,
-                    onBack
+                    onBack,
+                    onAddFavorite,
+                    isFavorited
                 )
         }
 
@@ -111,7 +107,9 @@ private fun Default(
     similarMovies: List<Movie>,
     formatDate: (date: String) -> String,
     onGoToMovieDetail: (movieId: Int) -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onAddFavorite: (movie: MovieDetails) -> Unit,
+    isFavorited:Boolean
 ) {
     Column(
         Modifier
@@ -127,7 +125,9 @@ private fun Default(
             onBack = onBack
         )
         Column {
-            Buttons()
+            Buttons(onAddFavorite = {
+                onAddFavorite(movieDetail)
+            }, isFavorited = isFavorited)
             Row(Modifier.padding(horizontal = 20.dp)) {
                 options.map {
                     Text(
@@ -253,6 +253,9 @@ fun MovieDetailPreview() {
         uiState = States.DEFAULT,
         formatDate = { "" },
         onGoToMovieDetail = {},
-        onBack = {}
+        onBack = {},
+        checkedFavorite = {},
+        onAddFavorite = {},
+        isFavorited = false
     )
 }

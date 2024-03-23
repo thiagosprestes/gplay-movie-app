@@ -1,4 +1,4 @@
-package com.example.globoplay.features.favorites
+package com.example.globoplay.features.favorites.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,15 +24,30 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
+import com.example.globoplay.core.domain.model.Movie
+import com.example.globoplay.core.domain.model.States
+import com.example.globoplay.core.presentation.components.Loading
 import com.example.globoplay.ui.theme.Black
 import com.example.globoplay.ui.theme.White
 import com.example.globoplay.ui.theme.circularFontFamily
 
 @Composable
-fun FavoritesScreen(navController: NavController, paddingValues: PaddingValues) {
+fun FavoritesScreen(paddingValues: PaddingValues, uiState: States, movies: List<Movie>) {
+    when (uiState) {
+        States.LOADING -> Loading()
+        States.DEFAULT -> Default(
+            paddingValues,
+            movies
+        )
+
+        States.GENERIC_ERROR -> Text("Generic error")
+        States.NETWORK_ERROR -> Text("Network error")
+    }
+}
+
+@Composable
+fun Default(paddingValues: PaddingValues, movies: List<Movie>) {
     Column(
         Modifier
             .fillMaxSize()
@@ -61,9 +77,9 @@ fun FavoritesScreen(navController: NavController, paddingValues: PaddingValues) 
                 horizontalArrangement = Arrangement.spacedBy(20.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
-                items(5) {
+                items(movies) {
                     AsyncImage(
-                        model = "https://www.movieposters.com/cdn/shop/products/108b520c55e3c9760f77a06110d6a73b_240x360_crop_center.progressive.jpg?v=1573652543",
+                        model = it.imageUrl,
                         contentDescription = null,
                         contentScale = ContentScale.FillHeight,
                         placeholder = BrushPainter(
@@ -87,5 +103,5 @@ fun FavoritesScreen(navController: NavController, paddingValues: PaddingValues) 
 @Preview
 @Composable
 fun FavoritesScreenPreview() {
-    FavoritesScreen(rememberNavController(), PaddingValues())
+    FavoritesScreen(PaddingValues(), States.DEFAULT, emptyList())
 }

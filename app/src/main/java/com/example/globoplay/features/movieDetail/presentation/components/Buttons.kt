@@ -11,6 +11,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
@@ -24,7 +25,7 @@ import com.example.globoplay.ui.theme.White
 import com.example.globoplay.ui.theme.circularFontFamily
 
 @Composable
-fun Buttons() {
+fun Buttons(onAddFavorite: () -> Unit, isFavorited: Boolean) {
     Row(
         Modifier
             .fillMaxWidth()
@@ -62,7 +63,7 @@ fun Buttons() {
             )
         }
         Button(
-            onClick = { },
+            onClick = { onAddFavorite() },
             colors = ButtonDefaults.buttonColors(Black),
             modifier = Modifier
                 .border(
@@ -73,13 +74,13 @@ fun Buttons() {
                 .weight(1f)
         ) {
             Icon(
-                imageVector = Icons.Default.Star,
+                imageVector = if (isFavorited) Icons.Default.Close else Icons.Default.Star,
                 contentDescription = null,
                 modifier = Modifier.padding(end = 5.dp),
                 tint = White
             )
             Text(
-                text = "Minha lista",
+                text = if (isFavorited) "Remover" else "Minha lista",
                 fontFamily = circularFontFamily,
                 color = White,
                 fontWeight = FontWeight.Bold,

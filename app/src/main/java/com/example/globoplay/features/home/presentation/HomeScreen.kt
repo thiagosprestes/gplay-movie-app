@@ -24,6 +24,7 @@ import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.globoplay.R
 import com.example.globoplay.core.domain.model.Movie
+import com.example.globoplay.core.domain.model.States
 import com.example.globoplay.core.presentation.components.ItemsList
 import com.example.globoplay.core.presentation.components.Loading
 import com.example.globoplay.ui.theme.Black
