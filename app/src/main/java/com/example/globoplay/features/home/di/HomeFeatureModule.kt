@@ -1,12 +1,12 @@
 package com.example.globoplay.features.home.di
 
 import com.example.globoplay.core.data.remote.datasource.MovieService
-import com.example.globoplay.core.data.remote.repository.MoviePopularRepositoryImpl
-import com.example.globoplay.features.home.data.source.MoviePopularRemoteDataSourceImpl
-import com.example.globoplay.features.home.domain.repository.MoviePopularRepository
-import com.example.globoplay.features.home.domain.source.MoviePopularRemoteDataSource
-import com.example.globoplay.features.home.domain.usecase.GetPopularMoviesUseCase
-import com.example.globoplay.features.home.domain.usecase.GetPopularMoviesUseCaseImpl
+import com.example.globoplay.features.home.data.repository.MovieRepositoryImpl
+import com.example.globoplay.features.home.data.source.MovieRemoteDataSourceImpl
+import com.example.globoplay.features.home.domain.repository.MovieRepository
+import com.example.globoplay.features.home.domain.source.MovieRemoteDataSource
+import com.example.globoplay.features.home.domain.usecase.GetMoviesUseCase
+import com.example.globoplay.features.home.domain.usecase.GetMoviesUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,19 +18,19 @@ import javax.inject.Singleton
 object HomeFeatureModule {
     @Provides
     @Singleton
-    fun provideMovieDataSource(service: MovieService): MoviePopularRemoteDataSource {
-        return MoviePopularRemoteDataSourceImpl(service)
+    fun provideMovieDataSource(service: MovieService): MovieRemoteDataSource {
+        return MovieRemoteDataSourceImpl(service)
     }
 
     @Provides
     @Singleton
-    fun provideMovieRepository(dataSource: MoviePopularRemoteDataSource): MoviePopularRepository {
-        return MoviePopularRepositoryImpl(dataSource)
+    fun provideMovieRepository(dataSource: MovieRemoteDataSource): MovieRepository {
+        return MovieRepositoryImpl(dataSource)
     }
 
     @Provides
     @Singleton
-    fun provideGetMoviesPopularUseCase(moviePopularRepository: MoviePopularRepository): GetPopularMoviesUseCase {
-        return GetPopularMoviesUseCaseImpl(moviePopularRepository)
+    fun provideGetMoviesPopularUseCase(moviePopularRepository: MovieRepository): GetMoviesUseCase {
+        return GetMoviesUseCaseImpl(moviePopularRepository)
     }
 }

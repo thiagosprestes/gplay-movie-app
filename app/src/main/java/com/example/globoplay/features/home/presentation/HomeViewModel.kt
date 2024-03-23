@@ -1,23 +1,23 @@
 package com.example.globoplay.features.home.presentation
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.globoplay.core.domain.model.Movie
 import com.example.globoplay.core.util.ErrorType
 import com.example.globoplay.core.util.ResultData
-import com.example.globoplay.features.home.domain.usecase.GetPopularMoviesUseCase
+import com.example.globoplay.features.home.domain.usecase.GetMoviesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getPopularMoviesUseCase: GetPopularMoviesUseCase
+    private val getMoviesUseCase: GetMoviesUseCase
 ) : ViewModel() {
     var uiState = mutableStateOf(States.LOADING)
-    var popularMovies = mutableStateOf<List<Movie>>(emptyList())
+    var popularMovies = mutableStateOf<List<Movie>?>(emptyList())
+    var upcomingMovies = mutableStateOf<List<Movie>?>(emptyList())
 
     init {
         viewModelScope.launch {
@@ -26,12 +26,13 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun getPopularMovies() {
-        val movies = getPopularMoviesUseCase.invoke()
+        val movies = getMoviesUseCase.invoke()
 
         movies.collect {
             when (it) {
                 is ResultData.Success -> {
-                    popularMovies.value = it.data!!
+                    popularMovies.value = it.data?.first
+                    upcomingMovies.value = it.data?.second
                     uiState.value = States.DEFAULT
                 }
 

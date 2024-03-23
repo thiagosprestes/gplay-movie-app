@@ -56,7 +56,8 @@ fun HomeNavHost(navController: NavHostController, paddingValues: PaddingValues) 
         composable(Route.HomeScreen.routeName) {
             val viewModel: HomeViewModel = hiltViewModel()
             val uiState = viewModel.uiState.value
-            val movies = viewModel.popularMovies.value
+            val popularMovies = viewModel.popularMovies.value
+            val upcomingMovies = viewModel.upcomingMovies.value
 
             HomeScreen(
                 onGoToMovieDetail = {
@@ -64,7 +65,9 @@ fun HomeNavHost(navController: NavHostController, paddingValues: PaddingValues) 
                 },
                 paddingValues,
                 uiState,
-                movies
+                popularMovies,
+                upcomingMovies
+
             )
         }
         composable(Route.MovieDetailsScreen.routeName, arguments = listOf(

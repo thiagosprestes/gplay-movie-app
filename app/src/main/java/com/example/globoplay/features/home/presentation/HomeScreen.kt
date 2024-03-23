@@ -34,11 +34,16 @@ fun HomeScreen(
     onGoToMovieDetail: (movieId: Int) -> Unit,
     paddingValues: PaddingValues,
     uiState: States,
-    movies: List<Movie>
+    popularMovies: List<Movie>?,
+    upcomingMovies: List<Movie>?
 ) {
     when (uiState) {
         States.LOADING -> Loading()
-        States.DEFAULT -> Default(onGoToMovieDetail, paddingValues, movies)
+        States.DEFAULT -> {
+            if (popularMovies != null && upcomingMovies != null)
+                Default(onGoToMovieDetail, paddingValues, popularMovies, upcomingMovies)
+        }
+
         States.GENERIC_ERROR -> Text("Generic error")
         States.NETWORK_ERROR -> Text("Network error")
     }
@@ -48,7 +53,8 @@ fun HomeScreen(
 private fun Default(
     onGoToMovieDetail: (movieId: Int) -> Unit,
     paddingValues: PaddingValues,
-    movies: List<Movie>
+    popularMovies: List<Movie>,
+    upcomingMovies: List<Movie>
 ) {
     Column(
         Modifier
@@ -69,8 +75,8 @@ private fun Default(
                 .verticalScroll(rememberScrollState())
                 .padding(bottom = 20.dp)
         ) {
-            ItemsList("Novelas", movies, onGoToMovieDetail)
-//            ItemsList("Séries")
+            ItemsList("Filmes populares", popularMovies, onGoToMovieDetail)
+            ItemsList("Novos lançamentos", upcomingMovies, onGoToMovieDetail)
 //            ItemsList("Cinema")
         }
     }
@@ -83,6 +89,7 @@ fun HomeScreenPreview() {
         onGoToMovieDetail = {},
         paddingValues = PaddingValues(),
         uiState = States.LOADING,
-        movies = emptyList()
+        popularMovies = emptyList(),
+        upcomingMovies = emptyList()
     )
 }

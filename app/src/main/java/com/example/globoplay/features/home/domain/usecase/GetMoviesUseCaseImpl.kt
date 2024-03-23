@@ -4,24 +4,29 @@ import com.example.globoplay.core.domain.model.Movie
 import com.example.globoplay.core.util.ErrorType
 import com.example.globoplay.core.util.ResultData
 import com.example.globoplay.features.home.data.mapper.toMovie
-import com.example.globoplay.features.home.domain.repository.MoviePopularRepository
+import com.example.globoplay.features.home.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-interface GetPopularMoviesUseCase {
-    suspend operator fun invoke(): Flow<ResultData<List<Movie>>>
+interface GetMoviesUseCase {
+    suspend operator fun invoke(): Flow<ResultData<Pair<List<Movie>?, List<Movie>?>>>
 }
 
-class GetPopularMoviesUseCaseImpl @Inject constructor(
-    private val repository: MoviePopularRepository
-) : GetPopularMoviesUseCase {
-    override suspend fun invoke(): Flow<ResultData<List<Movie>>> = flow {
+class GetMoviesUseCaseImpl @Inject constructor(
+    private val repository: MovieRepository
+) : GetMoviesUseCase {
+    override suspend fun invoke(): Flow<ResultData<Pair<List<Movie>?, List<Movie>?>>> = flow {
         try {
-            val response = repository.getPopularMovies()
-            emit(ResultData.Success(response.results.toMovie()))
+            val popularMoviesResponse = repository.getPopularMovies()
+            val upcomingMoviesResponse = repository.getUpcomingMovies()
+
+            val popularMovies = popularMoviesResponse.results.toMovie()
+            val upcomingMovies = upcomingMoviesResponse.results.toMovie()
+
+            emit(ResultData.Success(popularMovies to upcomingMovies))
         } catch (exception: IOException) {
             exception.printStackTrace()
             emit(ResultData.Failure(exception, ErrorType.GENERIC))

@@ -24,4 +24,7 @@ interface MovieService {
     suspend fun getSimilarMovies(
         @Path("movie_id") movieId: Int,
     ): MovieResponse
+
+    @GET("movie/upcoming")
+    suspend fun getUpcoming(): MovieResponse
 }
