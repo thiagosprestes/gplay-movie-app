@@ -9,7 +9,10 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.globoplay.core.presentation.navigation.BottomNavItem
 import com.example.globoplay.core.presentation.navigation.Route
 import com.example.globoplay.ui.theme.Black
@@ -54,6 +57,12 @@ fun BottomNavigationBar(
             )
         }
     }
+}
+
+@Composable
+fun currentRoute(navController: NavHostController): String? {
+    val navBackEntry by navController.currentBackStackEntryAsState()
+    return navBackEntry?.destination?.route
 }
 
 @Preview

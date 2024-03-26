@@ -14,6 +14,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.globoplay.core.presentation.components.BottomNavigationBar
+import com.example.globoplay.core.presentation.components.currentRoute
 import com.example.globoplay.features.favorites.presentation.FavoritesScreen
 import com.example.globoplay.features.favorites.presentation.FavoritesViewModel
 import com.example.globoplay.features.home.presentation.HomeScreen
@@ -34,14 +35,16 @@ fun Navigation() {
 
     Scaffold(
         bottomBar = {
-            BottomNavigationBar(
-                onNavigate = {
-                    navController.navigate(it.route.lowercase()) {
-                        launchSingleTop = true
-                    }
-                },
-                navBackStackEntry?.destination?.route
-            )
+            if (currentRoute(navController = navController) != MovieDetailsNavigation.MovieDetailsScreen.route) {
+                BottomNavigationBar(
+                    onNavigate = {
+                        navController.navigate(it.route.lowercase()) {
+                            launchSingleTop = true
+                        }
+                    },
+                    navBackStackEntry?.destination?.route
+                )
+            }
         },
         content = {
             HomeNavHost(navController, it)
@@ -61,7 +64,7 @@ fun HomeNavHost(navController: NavHostController, paddingValues: PaddingValues) 
 
             HomeScreen(
                 onGoToMovieDetail = {
-                    navController.navigate(Route.MovieDetailsScreen.passMovieId(it))
+                    navController.navigate(MovieDetailsNavigation.MovieDetailsScreen.passMovieId(it))
                 },
                 paddingValues,
                 uiState,
@@ -70,7 +73,16 @@ fun HomeNavHost(navController: NavHostController, paddingValues: PaddingValues) 
 
             )
         }
-        composable(Route.MovieDetailsScreen.routeName, arguments = listOf(
+        composable(Route.FavoritesScreen.routeName) {
+            val viewModel: FavoritesViewModel = hiltViewModel()
+            val uiState = viewModel.uiState.value
+            val movies = viewModel.movies.value
+
+            FavoritesScreen(paddingValues, uiState, movies, onGoToMovie = {
+                navController.navigate(MovieDetailsNavigation.MovieDetailsScreen.passMovieId(it))
+            })
+        }
+        composable(MovieDetailsNavigation.MovieDetailsScreen.route, arguments = listOf(
             navArgument("movieId") {
                 type = NavType.IntType
                 defaultValue = 0
@@ -106,7 +118,9 @@ fun HomeNavHost(navController: NavHostController, paddingValues: PaddingValues) 
                     viewModel.formatDate(date)
                 },
                 onGoToMovieDetail = { movieId ->
-                    navController.navigate(Route.MovieDetailsScreen.passMovieId(movieId))
+                    navController.navigate(
+                        MovieDetailsNavigation.MovieDetailsScreen.passMovieId(movieId)
+                    )
                 },
                 onBack = {
                     navController.popBackStack()
@@ -115,15 +129,6 @@ fun HomeNavHost(navController: NavHostController, paddingValues: PaddingValues) 
                 onAddFavorite = onAddFavorite,
                 isFavorited = isFavorited
             )
-        }
-        composable(Route.FavoritesScreen.routeName) {
-            val viewModel: FavoritesViewModel = hiltViewModel()
-            val uiState = viewModel.uiState.value
-            val movies = viewModel.movies.value
-
-            FavoritesScreen(paddingValues, uiState, movies, onGoToMovie = {
-                navController.navigate(Route.MovieDetailsScreen.passMovieId(it))
-            })
         }
     }
 }

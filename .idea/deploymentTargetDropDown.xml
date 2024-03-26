@@ -18,6 +18,21 @@
           <timeTargetWasSelectedWithDropDown value="2024-03-19T20:01:32.318417Z" />
         </State>
       </entry>
+      <entry key="getMovieShouldReturnCorrectMovieById()">
+        <State />
+      </entry>
+      <entry key="getMovies()">
+        <State />
+      </entry>
+      <entry key="getMovies_orderedById()">
+        <State />
+      </entry>
+      <entry key="insertMovie()">
+        <State />
+      </entry>
+      <entry key="insertMovies()">
+        <State />
+      </entry>
     </value>
   </component>
 </project>

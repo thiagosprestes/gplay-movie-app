@@ -5,7 +5,4 @@ sealed class Route(
 ) {
     object HomeScreen : Route("HomeScreen")
     object FavoritesScreen : Route("FavoritesScreen")
-    object MovieDetailsScreen : Route("MovieDetailsScreen/{movieId}") {
-        fun passMovieId(movieId: Int) = "MovieDetailsScreen/${movieId}"
-    }
 }
