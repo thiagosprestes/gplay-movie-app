@@ -20,7 +20,6 @@ import com.google.common.truth.Truth.assertThat
 @HiltAndroidTest
 @SmallTest
 class MovieDaoTest {
-
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
@@ -112,5 +111,51 @@ class MovieDaoTest {
         val movies = movieDao.getMovies().first()
 
         assertThat(movies[0].title).isEqualTo(movieEntity.title)
+    }
+
+    @Test
+    fun isFavorited() = runTest {
+        val movieId = 5321
+        val favoriteMovie = MovieEntity(movieId = movieId, title = "Vingadores", imageUrl = "url")
+        movieDao.insertMovie(favoriteMovie)
+
+        val result = movieDao.isFavorite(movieId)
+
+        assertThat(result).isEqualTo(favoriteMovie)
+    }
+
+    @Test
+    fun isNotFavorited() = runTest {
+        val movieId = 5321
+        val favoriteMovie = MovieEntity(movieId = movieId, title = "Vingadores", imageUrl = "url")
+
+        val result = movieDao.isFavorite(movieId)
+
+        assertThat(result).isEqualTo(null)
+    }
+
+    @Test
+    fun updateMovie() = runTest {
+        val movieEntity = MovieEntity(movieId = 1, title = "Vingadores", imageUrl = "url")
+        movieDao.insertMovie(movieEntity)
+
+        val allMovies = movieDao.getMovies().first()
+        val updateMovie = allMovies[0].copy(title = "Homem aranha")
+
+        movieDao.insertMovie(updateMovie)
+
+        val movies = movieDao.getMovies().first()
+        assertThat(movies[0].title).contains(updateMovie.title)
+    }
+
+    @Test
+    fun deleteMovie() = runTest {
+        val movieEntity = MovieEntity(movieId = 1, title = "Vingadores", imageUrl = "url")
+        movieDao.insertMovie(movieEntity)
+
+        movieDao.deleteMovie(movieEntity)
+
+        val movies = movieDao.getMovies().first()
+        assertThat(movies).isEmpty()
     }
 }
