@@ -2,9 +2,6 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="MovieDaoTest">
-        <State />
-      </entry>
       <entry key="app">
         <State>
           <targetSelectedWithDropDown>
@@ -20,18 +17,6 @@
           </targetSelectedWithDropDown>
           <timeTargetWasSelectedWithDropDown value="2024-03-19T20:01:32.318417Z" />
         </State>
-      </entry>
-      <entry key="deleteMovie()">
-        <State />
-      </entry>
-      <entry key="insertMovie()">
-        <State />
-      </entry>
-      <entry key="isNotFavorited()">
-        <State />
-      </entry>
-      <entry key="updateMovie()">
-        <State />
       </entry>
     </value>
   </component>

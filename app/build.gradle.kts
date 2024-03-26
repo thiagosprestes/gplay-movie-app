@@ -37,7 +37,8 @@ android {
         debug {
             val apiKey: String = gradleLocalProperties(rootDir).getProperty("API_KEY")
             val baseUrl: String = gradleLocalProperties(rootDir).getProperty("BASE_URL")
-            val posterBaseUrl: String = gradleLocalProperties(rootDir).getProperty("POSTER_BASE_URL")
+            val posterBaseUrl: String =
+                gradleLocalProperties(rootDir).getProperty("POSTER_BASE_URL")
 
             buildConfigField("String", "API_KEY", apiKey)
             buildConfigField("String", "BASE_URL", baseUrl)
@@ -103,8 +104,6 @@ dependencies {
 
     testImplementation(libs.junit)
 
-    androidTestImplementation("com.google.truth:truth:1.4.2")
-
     androidTestImplementation(libs.hilt.android.testing)
     kaptAndroidTest(libs.hilt.android.compiler)
 
@@ -117,6 +116,31 @@ dependencies {
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.ui.test.junit4)
+    debugImplementation(libs.ui.tooling)
+    debugImplementation(libs.ui.test.manifest)
+
+    implementation(libs.javax.inject)
+
+    kaptAndroidTest(libs.hilt.android.compiler)
+    androidTestImplementation(libs.hilt.android.testing)
+
+    testImplementation(libs.junit)
+    testImplementation(libs.androidx.core.testing)
+    /**/testImplementation(libs.kotlinx.coroutines.test)
+    /**/testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.mockito.inline)
+    testImplementation(libs.androidx.room.testing)
+
+    androidTestImplementation(libs.androidx.core.testing)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+    implementation(libs.truth)
+    androidTestImplementation(libs.truth)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
